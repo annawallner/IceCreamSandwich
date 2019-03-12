@@ -28,7 +28,7 @@ android:
     - sys-img-armeabi-v7a-android-22
 
 ## uncomment android emulator if android integration tests are needed
-# before_script:
+#before_script:
 #  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
 #  - emulator -avd test -no-audio -no-window &
 #  - android-wait-for-emulator
@@ -40,12 +40,12 @@ script:
   - ./gradlew test jacocoTestReport
 ## uncomment test exec if android integration tests are needed
 #  - ./gradlew connectedAndroidTest
-  - ./gradlew lint
+#  - ./gradlew lint
   - sonar-scanner
 
 addons:
   sonarcloud:
-    organization: "icecreamsandwich" # der key der organisation auf sonarcloud.io
+    organization: "IceCreamSandwich" # der key der organisation auf sonarcloud.io
     token:
       secure: $SONAR_TOKEN       # $SONAR_TOKEN -> Umgebungsvariable auf travis-ci.org
 

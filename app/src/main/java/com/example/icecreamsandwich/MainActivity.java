@@ -1,5 +1,6 @@
 package com.example.icecreamsandwich;
 
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,7 +8,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.io.*;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     //Instanzvariablen eingefügt
     public TextView textView;
@@ -15,28 +22,75 @@ public class MainActivity extends AppCompatActivity {
     public Button button;
     public EditText editText;
 
+    private TextView mTextViewReplyFromServer;
+    private EditText mEditTextSendMessage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Instanzvariablen mit den Variablen aus dem XML Dokument verbunden
         textView = (TextView) findViewById(R.id.textView);
-        textView2 = (TextView) findViewById(R.id.textView2);
+        mTextViewReplyFromServer = (TextView) findViewById(R.id.textView2);
         button = (Button) findViewById(R.id.button);
-        editText = (EditText) findViewById(R.id.editText);
+        mEditTextSendMessage = (EditText) findViewById(R.id.editText);
+        button.setOnClickListener(this);
+    }
 
-        //Text eingefügt
-        textView.setText("Gib deine Matrikelnummer ein");
-        textView2.setText("Antwort vom Server");
-        button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+
+            case R.id.button:
+                try {
+                    sendMessage(mEditTextSendMessage.getText().toString());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+        }
+    }
+
+    private void sendMessage(final String msg) throws IOException {
+
+        final Handler handler = new Handler();
+        Thread thread = new Thread(new Runnable() {
             @Override
-            public void onClick(View v) {
-                String Button = editText.getText().toString();
+            public void run() {
+
+                try {
+
+                    Socket s = new Socket("www.se2-isys.aau.at", 53212);
+
+                    OutputStream out = s.getOutputStream();
+
+                    PrintWriter output = new PrintWriter(out);
+
+                    output.println(msg);
+                    output.flush();
+                    BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+                    final String st = input.readLine();
+
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            String s = mTextViewReplyFromServer.getText().toString();
+                            if (st.trim().length() != 0)
+                                mTextViewReplyFromServer.setText(s + "\nFrom Server : " + st);
+                        }
+                    });
+
+                    output.close();
+                    out.close();
+                    s.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
-
+        thread.start();
     }
-
 }

@@ -4,7 +4,7 @@ apply plugin: 'jacoco'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.example.icecreamsandwich"
+        applicationId "se2.aau.at.einzelabgabe"
         minSdkVersion 21
         targetSdkVersion 27
         versionCode 1

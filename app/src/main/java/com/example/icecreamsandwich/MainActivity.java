@@ -18,12 +18,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Instanzvariablen eingefügt
     public TextView textView;
-    //public TextView textView2;
+    public TextView serverReply;
     public Button button;
-    //public EditText editText;
-
-    public TextView mTextViewReplyFromServer;
-    public EditText mEditTextSendMessage;
+    public static EditText sendMessage;
+    static String input = null;
+    static String output = "0";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +30,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         textView = (TextView) findViewById(R.id.textView);
-        mTextViewReplyFromServer = (TextView) findViewById(R.id.textView2);
+        serverReply = (TextView) findViewById(R.id.textView2);
         button = (Button) findViewById(R.id.button);
-        mEditTextSendMessage = (EditText) findViewById(R.id.editText);
+        sendMessage = (EditText) findViewById(R.id.editText);
         button.setOnClickListener(this);
     }
 
@@ -44,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.button:
                 try {
-                    sendMessage(mEditTextSendMessage.getText().toString());
+                    sendMessage(sendMessage.getText().toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -75,10 +74,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-
-                            //String s = mTextViewReplyFromServer.getText().toString();
+                            
                             if (st.trim().length() != 0)
-                                mTextViewReplyFromServer.setText(st);
+                                serverReply.setText(st + '\n' + calculate());
                         }
                     });
 
@@ -86,11 +84,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     out.close();
                     s.close();
                 } catch (Exception e) {
-                   mTextViewReplyFromServer.setText(e.getMessage());
+                    serverReply.setText(e.getMessage());
                 }
             }
         });
 
         thread.start();
+    }
+
+    public String calculate() {
+        input = sendMessage.getText().toString();
+        int counter = 0;
+        char[] splitted = input.toCharArray();
+        char[] case1 = new char[input.length()];
+        char[] case0 = new char[input.length()];
+
+
+        for (int i = 0; i < splitted.length; i++) {
+            counter++;
+
+            switch (counter % 2) {
+                case 0:
+                    case1[i] = splitted[i];
+                    break;
+
+                case 1:
+                    int castToInt = (int) splitted[i] + 48;
+                    char assci = (char) castToInt;
+                    case0[i] = assci;
+
+            }
+        }
+
+        output = Character.toString(case0[0]);
+
+        for (int i = 1; i < input.length(); i++) {
+            if (i % 2 == 0) {
+                output = output + case0[i];
+            } else {
+                output = output + case1[i];
+            }
+        }
+
+        return output;
     }
 }

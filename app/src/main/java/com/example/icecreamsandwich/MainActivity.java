@@ -76,17 +76,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void run() {
 
-                            String s = mTextViewReplyFromServer.getText().toString();
+                            //String s = mTextViewReplyFromServer.getText().toString();
                             if (st.trim().length() != 0)
-                                mTextViewReplyFromServer.setText(s + "\nFrom Server : " + st);
+                                mTextViewReplyFromServer.setText(st);
                         }
                     });
 
                     output.close();
                     out.close();
                     s.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                   mTextViewReplyFromServer.setText(e.getMessage());
                 }
             }
         });

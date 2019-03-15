@@ -18,12 +18,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //Instanzvariablen eingefügt
     public TextView textView;
-    public TextView textView2;
+    //public TextView textView2;
     public Button button;
-    public EditText editText;
+    //public EditText editText;
 
-    private TextView mTextViewReplyFromServer;
-    private EditText mEditTextSendMessage;
+    public TextView mTextViewReplyFromServer;
+    public EditText mEditTextSendMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 try {
 
-                    Socket s = new Socket("www.se2-isys.aau.at", 53212);
+                    Socket s = new Socket("se2-isys.aau.at", 53212);
 
                     OutputStream out = s.getOutputStream();
 

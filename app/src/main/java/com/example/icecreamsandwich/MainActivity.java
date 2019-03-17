@@ -74,9 +74,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     handler.post(new Runnable() {
                         @Override
                         public void run() {
-                            
+
                             if (st.trim().length() != 0)
-                                serverReply.setText(st + '\n' + calculate());
+                                serverReply.setText(st + '\n' + '\n' + "ascii coding: " + calculate());
                         }
                     });
 

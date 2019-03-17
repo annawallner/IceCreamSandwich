@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public TextView textView;
     public TextView serverReply;
     public Button button;
+    public Button button2;
     public static EditText sendMessage;
     static String input = null;
     static String output = "0";
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         textView = (TextView) findViewById(R.id.textView);
         serverReply = (TextView) findViewById(R.id.textView2);
         button = (Button) findViewById(R.id.button);
+        button = (Button) findViewById(R.id.button2);
         sendMessage = (EditText) findViewById(R.id.editText);
         button.setOnClickListener(this);
     }
@@ -43,15 +45,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.button:
                 try {
-                    sendMessage(sendMessage.getText().toString());
+                    sendMessageToServer(sendMessage.getText().toString());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
+
+        }
+        switch (v.getId()) {
+
+            case R.id.button2:
+                try {
+                    calculate();
+                    serverReply.setText(output);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
         }
     }
 
-    private void sendMessage(final String msg) throws IOException {
+
+    private void sendMessageToServer(final String msg) throws IOException {
 
         final Handler handler = new Handler();
         Thread thread = new Thread(new Runnable() {
@@ -76,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
 
                             if (st.trim().length() != 0)
-                                serverReply.setText(st + '\n' + '\n' + "ascii coding: " + calculate());
+                                serverReply.setText(st + '\n' + '\n' );
                         }
                     });
 
@@ -92,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         thread.start();
     }
 
-    public String calculate() {
+    private String calculate() throws IOException{
         input = sendMessage.getText().toString();
         int counter = 0;
         char[] splitted = input.toCharArray();
@@ -126,6 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        return output;
+    return output;
     }
 }

@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     break;
 
                 case 1:
+
                     int castToInt = (int) splitted[i] + 48;
                     char assci = (char) castToInt;
                     case0[i] = assci;

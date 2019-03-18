@@ -121,14 +121,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             switch (counter % 2) {
                 case 0:
-                    case1[i] = splitted[i];
+                    case0[i] = splitted[i];
                     break;
 
                 case 1:
-
-                    int castToInt = (int) splitted[i] + 48;
-                    char assci = (char) castToInt;
-                    case0[i] = assci;
+                    if (splitted[i] == 0) {
+                        case1[i] = 'j';
+                    } else {
+                        int castToInt = (int) splitted[i] + 48;
+                        char assci = (char) castToInt;
+                        case1[i] = assci;
+                    }
 
             }
         }

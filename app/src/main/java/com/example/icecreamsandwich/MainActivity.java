@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         public void run() {
 
                             if (st.trim().length() != 0)
-                                serverReply.setText(st + '\n' + '\n' );
+                                serverReply.setText(st);
                         }
                     });
 
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         thread.start();
     }
 
-    private String calculate() throws IOException{
+    private String calculate() throws IOException {
         input = sendMessage.getText().toString();
         int counter = 0;
         char[] splitted = input.toCharArray();
@@ -121,21 +121,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             switch (counter % 2) {
                 case 0:
-                    case0[i] = splitted[i];
-                    break;
-
-                case 1:
-                    if (splitted[i] == 0) {
+                    if (splitted[i] == '0'){
                         case1[i] = 'j';
-                    } else {
+                    }else {
                         int castToInt = (int) splitted[i] + 48;
                         char assci = (char) castToInt;
                         case1[i] = assci;
                     }
+                    break;
 
+                case 1:
+                        case0[i] = splitted[i];
+                    break;
             }
         }
-
         output = Character.toString(case0[0]);
 
         for (int i = 1; i < input.length(); i++) {
@@ -146,6 +145,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-    return output;
+        return output;
     }
 }

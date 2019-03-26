@@ -116,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         char[] case0 = new char[input.length()];
 
 
+        // Hallo
         for (int i = 0; i < splitted.length; i++) {
             counter++;
 
